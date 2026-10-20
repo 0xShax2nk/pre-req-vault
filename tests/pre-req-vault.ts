@@ -88,7 +88,7 @@ describe("pre-req-vault", () => {
       })
       .rpc();
 
-    confirmTx(tx);
+    await confirmTx(tx);
 
     const finalBalanceVault = await provider.connection.getBalance(vaultPda);
     const finalBalanceUser = await provider.connection.getBalance(user);
@@ -124,13 +124,19 @@ describe("pre-req-vault", () => {
       })
       .rpc();
 
-    confirmTx(tx);
+    await confirmTx(tx);
 
     const finalBalanceVault = await provider.connection.getBalance(vaultPda);
     const finalBalanceUser = await provider.connection.getBalance(user);
 
     expect(finalBalanceVault).to.equal(initialVaultBalance - withdrawAmount);
     expect(finalBalanceUser).to.be.greaterThan(intialUserBalance);
+
+    const registrationInfo =
+    await provider.connection.getAccountInfo(applicationAccount);
+
+    expect(registrationInfo).to.not.be.null;
+
   });
 
   it(" Close the vault and withdraw all the funds", async () => {
@@ -146,7 +152,7 @@ describe("pre-req-vault", () => {
       })
       .rpc();
 
-    confirmTx(tx);
+    await confirmTx(tx);
 
     expect(await provider.connection.getBalance(vaultPda)).to.equal(0);
 

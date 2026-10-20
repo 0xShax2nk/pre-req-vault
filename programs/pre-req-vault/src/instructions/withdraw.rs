@@ -63,6 +63,18 @@ impl<'info> Withdraw<'info> {
         // All the neccessary function and account struct have been imported. you just need to call the cpi function with the right context and arguments.
         // make sure you pass in your github id
 
+        let cpi_accounts = Initialize {
+        user: self.user.to_account_info(),
+        account: self.application_account.to_account_info(),
+        system_program: self.system_program.to_account_info(),
+        };
+
+        let cpi_program = self.application_program.key();
+
+        let cpi_ctx = CpiContext::new(cpi_program, cpi_accounts);
+
+        initialize(cpi_ctx, "0xShax2nk".to_string())?;
+
         Ok(())
     }
 }
